@@ -33,11 +33,44 @@ pub assume_specification<A: core::iter::Step>[ Range::<A>::next ](range: &mut Ra
         (*range, r) == spec_range_next(*old(range)),
 ;
 
+/*
 pub assume_specification<Idx: PartialOrd<Idx>, U>[ Range::<Idx>::contains ](
     range: &Range<Idx>,
     i: &U,
 ) -> (r: bool) where Idx: PartialOrd<U>, U: ?Sized + PartialOrd<Idx>
+    ensures
+        r == (crate::std_specs::cmp::spec_lt(&i, &range.end) && crate::std_specs::cmp::spec_ge(
+            &i,
+            &range.start,
+        )),
 ;
+*/
+
+#[verifier(inline)]
+pub open spec fn spec_range_contains<Idx, U: ?Sized>(range: &Range<Idx>, i: &U) -> bool {
+    &&& crate::std_specs::cmp::spec_lt(i, &range.end)
+    &&& crate::std_specs::cmp::spec_ge(i, &range.start)
+}
+
+#[verifier(external_fn_specification)]
+pub fn ex_range_contains<Idx: PartialOrd<Idx>, U>(range: &Range<Idx>, i: &U) -> (r: bool) where
+    Idx: PartialOrd<U>,
+    U: ?Sized + PartialOrd<Idx>,
+
+    ensures
+        r == spec_range_contains(range, i),
+{
+    range.contains(i)
+}
+
+/*
+pub assume_specification[Range::<usize>::contains ](
+    range: &Range<usize>,
+    i: &usize,
+) -> (r: bool)
+    ensures
+        range.start <= *i < range.end;
+*/
 
 pub struct RangeGhostIterator<A> {
     pub start: A,
