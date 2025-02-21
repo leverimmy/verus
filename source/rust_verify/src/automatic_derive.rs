@@ -26,13 +26,12 @@ pub fn get_action(rust_item: Option<RustItem>) -> AutomaticDeriveAction {
         Some(RustItem::PartialEq | RustItem::Eq) => AutomaticDeriveAction::Ignore,
         Some(RustItem::Clone) => AutomaticDeriveAction::Special(SpecialTrait::Clone),
 
-        Some(RustItem::Copy) => AutomaticDeriveAction::VerifyAsIs,
+        Some(RustItem::Copy) | Some(RustItem::PartialOrd) => AutomaticDeriveAction::VerifyAsIs,
 
         Some(RustItem::Hash)
         | Some(RustItem::Default)
         | Some(RustItem::Debug)
-        | Some(RustItem::Ord)
-        | Some(RustItem::PartialOrd) => AutomaticDeriveAction::Ignore,
+        | Some(RustItem::Ord) => AutomaticDeriveAction::Ignore,
 
         Some(_) | None => AutomaticDeriveAction::VerifyAsIs,
     }

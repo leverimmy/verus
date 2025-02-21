@@ -17,6 +17,7 @@ mod atomic_ghost;
 mod attr_block_trait;
 mod attr_rewrite;
 mod calc_macro;
+mod derive;
 mod enum_synthesize;
 mod fndecl;
 mod is_variant;
@@ -295,3 +296,24 @@ pub fn verus_extra_stmts(input: proc_macro::TokenStream) -> proc_macro::TokenStr
     }
 }
 /*** End of verus small macro definition for executable items ***/
+
+/*** Helpful Derive macros ***/
+#[proc_macro_derive(SpecPartialEqOp)]
+pub fn derive_partial_eq(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    derive::spec_trait_expand_for_struct(
+        input,
+        derive::CmpSpecCrate,
+        "SpecPartialEqOp",
+        derive::spec_partial_eq_expand,
+    )
+}
+
+#[proc_macro_derive(SpecPartialOrdOp)]
+pub fn derive_partial_ord(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
+    derive::spec_trait_expand_for_struct(
+        input,
+        derive::CmpSpecCrate,
+        "SpecPartialOrdOp",
+        derive::spec_partial_ord_expand,
+    )
+}

@@ -91,7 +91,6 @@ pub broadcast group group_vstd_default {
     std_specs::bits::group_bits_axioms,
     std_specs::control_flow::group_control_flow_axioms,
     std_specs::vec::group_vec_axioms,
-    std_specs::cmp::group_cmp,
     slice::group_slice_axioms,
     array::group_array_axioms,
     multiset::group_multiset_axioms,
