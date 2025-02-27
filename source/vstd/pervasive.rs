@@ -165,9 +165,26 @@ pub spec fn arbitrary<A>() -> A;
 
 #[verifier::external_body]  /* vattr */
 #[allow(dead_code)]
-pub proof fn proof_from_false<A>() -> (tracked a: A) {
-    requires(false);
-    unimplemented!()
+pub const proof fn proof_from_false<A>() -> (tracked a: A)
+    requires
+        false,
+{
+    Tracked::assume_new().get()
+}
+
+pub const fn tracked_exec_unwrap<T>(v: Tracked<Option<T>>) -> (ret: Tracked<T>)
+    requires
+        v@.is_some(),
+    ensures
+        ret@ == v@.unwrap(),
+{
+    let Tracked(v) = v;
+    Tracked(
+        match v {
+            Some(m) => m,
+            None => proof_from_false(),
+        },
+    )
 }
 
 #[verifier::external_body]  /* vattr */
