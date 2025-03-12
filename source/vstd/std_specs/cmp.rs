@@ -108,7 +108,7 @@ pub trait ExPartialOrd<Rhs: ?Sized>: PartialEq<Rhs> {
 
     fn partial_cmp(&self, other: &Rhs) -> (ret: Option<Ordering>)
         ensures
-            obeys_comparison_model::<Self, Rhs>() ==> ret === spec_partial_cmp(self, other),
+            obeys_comparison_model::<Self, Rhs>() ==> ret == spec_partial_cmp(self, other),
     ;
 
     fn lt(&self, other: &Rhs) -> (ret: bool)
