@@ -101,5 +101,7 @@ pub(crate) fn spec_partial_ord_expand(
                 Some(core::cmp::Ordering::Equal)
             }
         }
+
+        proof fn lemma_cmp_eq_no_logic_err(&self, rhs: &Self) {}
     }
 }
