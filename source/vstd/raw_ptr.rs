@@ -238,6 +238,16 @@ impl<T> PointsTo<T> {
     {
         unimplemented!();
     }
+
+    proof fn is_same(tracked &self, tracked other: &Self)
+        requires
+            size_of::<T>() > 0,
+            self.ptr() as int == other.ptr() as int,
+        ensures
+            self == other,
+    {
+        admit()
+    }
 }
 
 impl<T> MemContents<T> {
